@@ -8,25 +8,31 @@ function playRound(playerSelection, computerSelection) {
     let ps = playerSelection.toLowerCase();
     let cs = computerSelection.toLowerCase();
 
-    console.log("You: " + ps + ", Computer: " + cs);
+    let outcome = "";
+
+    outcome += "You: " + ps + ", Computer: " + cs + "\n";
 
     if ((ps == "rock" && cs == "scissors") ||
         (ps == "paper" && cs == "rock") ||
         (ps == "scissors" && cs == "paper") ) {
-            return "You win!";
+            outcome += "You win!";
     } else if (ps === cs){
-        return "Tie!";
+        outcome += "Tie!";
     }   else {
-        return "You lose!";
+        outcome += "You lose!";
     }
+
+    return outcome;
 }
 
 function game() {
+    const numberOfWins = 5;
+
     let playerWins = 0;
     let computerWins = 0;
 
-    while (playerWins < 5 && computerWins < 5) {
-        let outcome = playRound(prompt("Rock, Paper or Scissors?"), computerPlay());
+    while (playerWins < numberOfWins && computerWins < numberOfWins) {
+        let outcome = playRound("Paper", computerPlay());
         console.log(outcome);
         if (outcome === "You win!") {
             playerWins++;
@@ -37,4 +43,14 @@ function game() {
     }
 }
 
-game();
+const buttons = document.querySelectorAll('button');
+const scoreboard = document.querySelector('.scoreboard');
+
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        const newLine = document.createElement('p');
+        newLine.textContent = playRound(button.textContent, computerPlay());
+        scoreboard.appendChild(newLine);
+        scoreboard.scrollTop = scoreboard.scrollHeight;
+    });    
+});
